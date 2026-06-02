@@ -4,7 +4,7 @@ from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from email.mime.text import MIMEText
 import base64
-from datetime import datetime
+from datetime import datetime, timedelta
 
 SCOPES = ["https://www.googleapis.com/auth/gmail.send",
           "https://www.googleapis.com/auth/calendar"]
@@ -61,16 +61,19 @@ def create_calendar_event():
     # build the Google Calendar service object
     service = build("calendar", "v3", credentials=creds)
 
+    start = datetime.now().replace(hour=18, minute=0, second=0, microsecond=0)
+    end = start + timedelta(hours=2)
+
     # define the calendar event details
     event = {
         "summary": "Study Session - Python & Neetcode",
         "description": "Programming in Python study session",
         "start": {
-            "dateTime": "2026-01-01T18:00:00",
+            "dateTime": start.isoformat(),
             "timeZone": "America/Los_Angeles"
         },
         "end": {
-            "dateTime": "2026-01-01T20:00:00",
+            "dateTime": end.isoformat(),
             "timeZone": "America/Los_Angeles"
         },
     }
