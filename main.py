@@ -4,6 +4,7 @@ from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from email.mime.text import MIMEText
 import base64
+from datetime import datetime
 
 SCOPES = ["https://www.googleapis.com/auth/gmail.send",
           "https://www.googleapis.com/auth/calendar"]
@@ -76,3 +77,20 @@ def create_calendar_event():
 
     # insert the event into the primary Google Calendar
     service.events().insert(calendarId="primary", body=event).execute()
+
+
+def main():
+    # get today's day of the week as a number (Monday=0, Sunday=6)
+    today = datetime.now().weekday()
+
+    # only send reminder on Monday (0) or Sunday (6)
+    if today == 0 or today == 6:
+        send_email()
+        create_calendar_event()
+    else:
+        print("No reminder needed today.")
+
+
+# only run main() if this file is executed directly
+if __name__ == "__main__":
+    main()
