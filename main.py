@@ -51,3 +51,28 @@ def send_email():
 
     # send the email via the Gmail API
     service.users().messages().send(userId="me", body=body).execute()
+
+
+def create_calendar_event():
+    # get the Google credentials to authenticate
+    creds = get_credentials()
+
+    # build the Google Calendar service object
+    service = build("calendar", "v3", credentials=creds)
+
+    # define the calendar event details
+    event = {
+        "summary": "Study Session - Python & Neetcode",
+        "description": "Programming in Python study session",
+        "start": {
+            "dateTime": "2026-01-01T18:00:00",
+            "timeZone": "America/Los_Angeles"
+        },
+        "end": {
+            "dateTime": "2026-01-01T20:00:00",
+            "timeZone": "America/Los_Angeles"
+        },
+    }
+
+    # insert the event into the primary Google Calendar
+    service.events().insert(calendarId="primary", body=event).execute()
